@@ -1,6 +1,9 @@
 ---
 # ubuntu/system settings
 
+hostname: 'tastyigniter-example.com'
+timezone_name: 'America/New_York'
+
 # deploy user settings
 
 deploy_user_sudo_password: 'password'
