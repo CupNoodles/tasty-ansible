@@ -1,0 +1,25 @@
+---
+- name: install pymysql
+  pip: 
+    name:
+      - pymysql
+  become: true
+
+- name: Create a mysql database for tastyigniter
+  community.mysql.mysql_db:
+    name:
+      - "{{ mysql_db_name }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: present
+  become: true
+
+- name: Create mysql user for use with new db
+  community.mysql.mysql_user:
+    name: "{{ mysql_user_name }}"
+    password: "{{ mysql_user_password }}"
+    priv:
+      '*.*': 'ALL'
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: present
+  changed_when: false
+  become: true

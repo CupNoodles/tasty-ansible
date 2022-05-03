@@ -1,0 +1,16 @@
+- name: boilerplate ubuntu settings for a webserver
+  import_tasks: ubuntu-bootstrap.yml
+  tags: ['ubuntu-bootstrap']
+
+- name: create a deploy/ssh user for server maintenance
+  import_tasks: deploy-user.yml
+  tags: ['deploy-user']
+
+
+- name: install webserver requirements for tastyigniter
+  import_tasks: server-requirements.yml
+  tags: ['tasty-server']
+
+- name: install tastyigniter application files
+  import_tasks: tsatyigniter.yml
+  tags: ['tasty-app']

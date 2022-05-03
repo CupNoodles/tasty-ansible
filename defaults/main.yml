@@ -1,0 +1,18 @@
+---
+# ubuntu/system settings
+
+# deploy user settings
+
+deploy_user_sudo_password: 'password'
+
+# tasty igniter server settings
+mysql_db_name: "tastyigniter"
+mysql_user_name: "tastyigniter"
+mysql_user_password: "password"
+
+install_location: '/var/www/html/'
+
+app_name: "TastyIgniter"
+app_url: "http://www.taatyigniter-example.com"
+
+certbot_email: tastyigniter-example@tastyigniter-testing.com

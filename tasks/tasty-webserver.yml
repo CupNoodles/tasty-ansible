@@ -1,0 +1,42 @@
+---
+- name: create a domain-specific nginx conf file
+  become: true
+  template: "src=templates/nginx.conf.j2 dest=/etc/nginx/sites-available/{{ hostname }} owner={{ deploy_user }} group={{ deploy_user }} mode=0644"
+  tags: ['nginx']
+  notify: restart nginx
+
+
+- name: enable nginx file
+  become: true
+  file: src=/etc/nginx/sites-available/{{ hostname }}
+        dest=/etc/nginx/sites-enabled/{{ hostname }}
+        state=link
+  tags: ['nginx']
+  notify: restart nginx
+  
+
+- name: set up php-fpm with nginx
+  blockinfile:
+    path: "{{ install_location }}/.nginx.conf"
+    insertafter: "## Write your FPM configuration here"
+    block: |
+          include snippets/fastcgi-php.conf;                                                         
+          fastcgi_pass unix:/var/run/php/php-fpm.sock;
+  tags: ['nginx']
+  become: true
+  become_user: "www-data"
+  notify: restart nginx
+
+- name: remove default sites-available
+  file:
+    path: /etc/nginx/sites-available/default
+    state: absent
+  become: true
+  notify: restart nginx
+
+- name: remove default sites-enabled
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  become: true
+  notify: restart nginx
