@@ -16,7 +16,7 @@
   tags: ['database']
 
 - name: set up webserver (nginx) configuration for tastyigniter
-  import_tasks: nginx.yml
+  import_tasks: tasty-webserver.yml
   tags: ['webserver']
 
 - name: install tastyigniter application files
