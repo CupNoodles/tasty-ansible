@@ -1,0 +1,30 @@
+---
+# Create a user with sudo permissions in the www-data group
+
+- set_fact:
+    sudo_password: "{{ deploy_user_sudo_password | password_hash('sha512', 'saltysalt') }}"
+
+- name: create a non-root deploy user
+  user:
+    name: "{{ deploy_user }}"
+    groups: sudo,www-data
+    shell: /bin/bash
+    password: "{{ sudo_password }}"
+    state: present
+  become: true
+
+- name: load your default ssh key
+  authorized_key:
+    user: "{{ deploy_user }}"
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+  become: true
+
+- name: confirm permissions on .ssh folder
+  file: 
+    path: /home/{{ deploy_user }}/.ssh
+    state: directory
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+    mode: 0755
+  become: true
+

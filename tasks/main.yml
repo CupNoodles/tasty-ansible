@@ -1,3 +1,4 @@
+---
 - name: boilerplate ubuntu settings for a webserver
   import_tasks: ubuntu-bootstrap.yml
   tags: ['ubuntu-bootstrap']
@@ -6,11 +7,22 @@
   import_tasks: deploy-user.yml
   tags: ['deploy-user']
 
-
 - name: install webserver requirements for tastyigniter
   import_tasks: server-requirements.yml
   tags: ['tasty-server']
 
+- name: set up database for tastyigniter
+  import_tasks: database.yml
+  tags: ['database']
+
+- name: set up webserver (nginx) configuration for tastyigniter
+  import_tasks: nginx.yml
+  tags: ['webserver']
+
 - name: install tastyigniter application files
-  import_tasks: tsatyigniter.yml
+  import_tasks: tastyigniter.yml
   tags: ['tasty-app']
+
+- name: set up certificates for TI as needed
+  import_tasks: letsencrypt.yml
+  when: env == 'production'

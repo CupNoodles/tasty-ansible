@@ -1,0 +1,130 @@
+---
+
+- name: create the install directory if it doesn't exist
+  file:
+    path: "{{ install_location }}"
+    mode: 0775
+    state: directory
+    owner: "www-data"
+    group: "www-data"
+  become: true
+
+- name: Check if TastyIgniter project already exists
+  stat:
+    path: "{{ install_location }}/composer.json"
+  register: ti_composer_json
+
+
+- name: Download TastyIgniter
+  community.general.composer:
+    command: create-project
+    composer_executable: /usr/bin/composer
+    arguments: tastyigniter/tastyigniter  "{{ install_location }}"
+    working_dir: "{{ install_location }}"
+    prefer_dist: yes
+  when: not ti_composer_json.stat.exists
+  become: true
+  become_user: "www-data"
+
+- name: Check if .env exists
+  stat:
+    path: "{{ install_location }}/.env"
+  register: ti_env
+  become: true
+  become_user: "www-data"
+
+
+- name: create .env file for --no-interaction install
+  ansible.builtin.copy:  
+    src: "{{ install_location }}/example.env"
+    dest: "{{ install_location }}/.env"
+    remote_src: yes
+  when: not ti_env.stat.exists
+  become: true
+  become_user: "www-data"
+
+
+#TODO what else do we need here?
+- name: update the information that we know in .env ()
+  lineinfile:
+    path: "{{ install_location }}/.env"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  with_items:
+  - { regexp: '^APP_NAME=.*$', line: 'APP_NAME="{{app_name}}"' }
+  - { regexp: '^APP_URL=.*$', line: 'APP_URL="{{app_url}}"' }
+  - { regexp: '^DB_PORT=.*$', line: 'DB_PORT="3306"' }
+  - { regexp: '^DB_DATABASE=.*$', line: 'DB_DATABASE="{{mysql_db_name}}"' }
+  - { regexp: '^DB_USERNAME=.*$', line: 'DB_USERNAME="{{mysql_user_name}}"' }
+  - { regexp: '^DB_PASSWORD=.*$', line: 'DB_PASSWORD="{{mysql_user_password}}"' }
+  - { regexp: '^DB_PREFIX=.*$', line: 'DB_PREFIX="ti_"' }
+  become: true
+  become_user: "www-data"
+
+- name: install TastyIgniter via artisan
+  shell: "php artisan igniter:install --no-interaction"
+  args:
+    chdir: "{{ install_location }}"
+  changed_when: false
+  become: true
+  become_user: "www-data"
+
+
+- name: chown everything in install_location to www-data
+  file: 
+    dest: "{{ install_location }}"
+    owner: www-data
+    group: www-data 
+    recurse: yes
+  become: true
+
+#- name: set system.log to 664
+#  file:
+#    dest: "{{ install_location }}/storage/logs/system.log"
+#    mode: 0664
+#  become: true
+
+- name: set up scheduler cron
+  cron: 
+    name: "Artisan scheduler"
+    minute: "*"
+    user: "{{ deploy_user }}"
+    job: "php {{ install_location }}/artisan schedule:run >> /dev/null 2>&1"
+  become: true
+
+
+- name: Check whether an app_key is set
+  lineinfile:
+    path: "{{ install_location }}/.env"
+    line: "APP_KEY="
+  check_mode: yes
+  register: app_key
+
+- name: run artisan key generate
+  shell: "php artisan key:generate --show"
+  register: new_app_key
+  args:
+    chdir: "{{ install_location }}"
+  when: not app_key.changed
+
+#TODO what else do we need here?
+- name: update app_key in .env
+  lineinfile:
+    path: "{{ install_location }}/.env"
+    regexp: "^APP_KEY=$"
+    line: "APP_KEY={{new_app_key.stdout}}"
+    state: present
+  when: not app_key.changed
+  become: true
+  become_user: "www-data"
+
+- name: artisan config cache
+  shell: "php artisan config:cache"
+  args:
+    chdir: "{{ install_location }}"
+  changed_when: false
+  become: true
+  become_user: "www-data"
+  
+
