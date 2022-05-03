@@ -1,10 +1,15 @@
 ---
+# global settings
+env: 'vm'
+
 # ubuntu/system settings
 
 hostname: 'tastyigniter-example.com'
 timezone_name: 'America/New_York'
+enable_ssl: true  # make sure this is true if app_url is set to an https url
 
 # deploy user settings
+deploy_user: 'deploy'
 
 deploy_user_sudo_password: 'password'
 
@@ -19,3 +24,7 @@ app_name: "TastyIgniter"
 app_url: "http://www.taatyigniter-example.com"
 
 certbot_email: tastyigniter-example@tastyigniter-testing.com
+
+
+
+
