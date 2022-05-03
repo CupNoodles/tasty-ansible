@@ -9,3 +9,9 @@
     name: systemd-timesyncd.service
     state: restarted
   become: true
+
+- name: restart nginx
+  become: true
+  service:
+    name: nginx
+    state: restarted
