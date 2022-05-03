@@ -20,9 +20,9 @@
   tags: ['webserver']
 
 - name: install tastyigniter application files
-  import_tasks: tastyigniter.yml
+  import_tasks: tasty-app.yml
   tags: ['tasty-app']
 
 - name: set up certificates for TI as needed
-  import_tasks: letsencrypt.yml
+  import_tasks: tasty-certs.yml
   when: env == 'production'
