@@ -15,13 +15,13 @@
   import_tasks: database.yml
   tags: ['database']
 
-- name: set up webserver (nginx) configuration for tastyigniter
-  import_tasks: tasty-webserver.yml
-  tags: ['webserver']
-
 - name: install tastyigniter application files
   import_tasks: tasty-app.yml
   tags: ['tasty-app']
+
+- name: set up webserver (nginx) configuration for tastyigniter
+  import_tasks: tasty-webserver.yml
+  tags: ['webserver']
 
 - name: set up certificates for TI as needed
   import_tasks: tasty-certs.yml
