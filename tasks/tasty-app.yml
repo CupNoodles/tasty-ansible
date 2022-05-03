@@ -14,12 +14,27 @@
     path: "{{ install_location }}/composer.json"
   register: ti_composer_json
 
+- name: clear out the install directory if it exists (required if nginx is installed and install_location is default /var/www/html/)
+  file: 
+    state: absent
+    path: "{{install_location}}"
+  when: not ti_composer_json.stat.exists
+
+- name: re-create the directory since we just removed it
+  file: 
+    state: directory
+    path: "{{install_location}}"
+    owner: "www-data"
+    group: "www-data"
+    mode: '0775'
+  when: not ti_composer_json.stat.exists
+
 
 - name: Download TastyIgniter
   community.general.composer:
     command: create-project
     composer_executable: /usr/bin/composer
-    arguments: tastyigniter/tastyigniter  "{{ install_location }}"
+    arguments: tastyigniter/tastyigniter "{{ install_location }}"
     working_dir: "{{ install_location }}"
     prefer_dist: yes
   when: not ti_composer_json.stat.exists
