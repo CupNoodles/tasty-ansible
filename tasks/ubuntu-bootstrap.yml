@@ -1,0 +1,46 @@
+---
+- name: update apt cache && upgrade
+  apt:
+    update_cache: yes
+    upgrade: "yes"
+    cache_valid_time: 3600
+
+- name: set up cron-apt
+  apt: 
+    package: ['cron-apt']
+
+- name: Disable ssh root access
+  lineinfile: dest=/etc/ssh/sshd_config regexp="^PermitRootLogin" line="PermitRootLogin no" state=present
+  notify: Restart sshd
+
+- name: Disable password authentication
+  lineinfile: dest=/etc/ssh/sshd_config regexp="^PasswordAuthentication" line="PasswordAuthentication no" state=present
+  notify: Restart sshd
+
+- name: Disallow agent forwarding
+  lineinfile: dest=/etc/ssh/sshd_config regexp="^#?AllowAgentForwarding" line="AllowAgentForwarding no" state=present
+  notify: Restart sshd
+
+- name: Run timedatectl status
+  command: /usr/bin/timedatectl status
+  changed_when: False
+  check_mode: no
+  register: timedatectl_result
+
+#set timezone by default 
+- name: set timezone to "{{ timezone_name }}"
+  timezone:
+    name: "{{ timezone_name }}"
+  when: "timezone_name|string not in timedatectl_result.stdout"
+  notify: Restart systemd-timesyncd
+
+- name: Enable ntp
+  command: /usr/bin/timedatectl set-ntp true
+  when: "'System clock synchronized: no' in timedatectl_result.stdout"
+  become: true
+  notify: Restart systemd-timesyncd
+
+- name: set hostname
+  hostname: 
+    name: "{{hostname}}"
+  become: true
