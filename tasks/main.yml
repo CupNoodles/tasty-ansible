@@ -27,4 +27,4 @@
 
 - name: set up certificates for TI as needed
   import_tasks: tasty-certs.yml
-  when: env == 'production'
+  when: enable_ssl == true
