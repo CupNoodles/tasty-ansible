@@ -4,11 +4,11 @@
   block:
   - name: Create private key (RSA, 4096 bits)
     community.crypto.openssl_privatekey:
-      path: /etc/ssl/certs/selfsigned-certificate.key
+      path: "/etc/ssl/certs/selfsigned-{{hostname}}.key"
 
   - name: Create a self-signed certificate
     community.crypto.x509_certificate:
-      path: /etc/ssl/certs/selfsigned-certificate.pem
+      path: /etc/ssl/certs/selfsigned-{{hostname}}.pem
       privatekey_path: /etc/ssl/certs/selfsigned-certificate.key
       provider: selfsigned
   

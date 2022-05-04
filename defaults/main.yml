@@ -4,9 +4,9 @@ env: 'local'
 
 # ubuntu/system settings
 
-hostname: 'tastyigniter-example.com'
+hostname: 'tastyigniter-example.com' # don't include www here even if it's in app_url
 timezone_name: 'America/New_York'
-enable_ssl: true  # make sure this is true if app_url is set to an https url
+
 
 # deploy user settings
 
@@ -16,16 +16,25 @@ deploy_user_sudo_password: 'password'
 ssh_pubkey_location: '~/.ssh/id_rsa.pub' # This is the pubkey on your host machine, so that you can easily SSH into your host as the newly created user
 
 # tasty igniter server settings
+
+# mysql
 mysql_db_name: "tastyigniter"
 mysql_user_name: "tastyigniter"
 mysql_user_password: "password"
 
-install_location: '/var/www/html/'
+# nginx
+enable_ssl: true  # make sure this is true if app_url is set to an https url
+redirect_https: true # adds a rewrite from http:// to https://
+redirect_www: true # will add a rewrite from example.com to www.examle.com. Obviously, app_url needs to have a www in it in order for this to work
+certbot_email: tastyigniter-example@tastyigniter-testing.com
 
+
+# app
+install_location: '/var/www/html/'
 app_name: "TastyIgniter"
 app_url: "http://www.taatyigniter-example.com"
 
-certbot_email: tastyigniter-example@tastyigniter-testing.com
+
 
 
 
