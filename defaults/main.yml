@@ -32,7 +32,7 @@ certbot_email: tastyigniter-example@tastyigniter-testing.com
 # app
 install_location: '/var/www/html/'
 app_name: "TastyIgniter"
-app_url: "https://www.{{hostname}}{{ ':' ~ https_port if enable_ssl and https_port is not none and https_port != 443}}" 
+app_url: "https://www.{{hostname}}{{ ':' ~ https_port if enable_ssl and https_port is not none and https_port != 443}}{{ ':' ~ http_port if not enable_ssl and http_port is not none and http_port != 80}}" 
 
 
 
