@@ -8,7 +8,7 @@ server {
         root /var/www/certbot;
     }
 
-    return 301 https://$host$request_uri;
+    return 301 https://$host{% if https_port != '443' %}:{{ https_port }}{%endif%}$request_uri;
 }
 {% endif %}
 
@@ -25,7 +25,7 @@ server {
     ssl_certificate /etc/letsencrypt/live/{{hostname}}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/{{hostname}}/privkey.pem; 
     {% endif %}
-    
+
     ssl_session_timeout 5m;
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
     ssl_prefer_server_ciphers on;

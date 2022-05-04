@@ -4,7 +4,7 @@ env: 'local'
 
 # ubuntu/system settings
 
-hostname: 'tastyigniter-example.com' # don't include www here even if it's in app_url
+hostname: 'tastyigniter-example.vm' # don't include www here even if it's in app_url
 timezone_name: 'America/New_York'
 
 
