@@ -10,8 +10,8 @@ enable_ssl: true  # make sure this is true if app_url is set to an https url
 
 # deploy user settings
 deploy_user: 'deploy'
-
 deploy_user_sudo_password: 'password'
+ssh_pubkey_location: '~/.ssh/id_rsa.pub' # This is the pubkey on your host machine, so that you can easily SSH into your host as the newly created user
 
 # tasty igniter server settings
 mysql_db_name: "tastyigniter"

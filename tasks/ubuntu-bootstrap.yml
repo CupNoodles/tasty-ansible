@@ -17,8 +17,12 @@
   lineinfile: dest=/etc/ssh/sshd_config regexp="^PasswordAuthentication" line="PasswordAuthentication no" state=present
   notify: Restart sshd
 
-- name: Disallow agent forwarding
-  lineinfile: dest=/etc/ssh/sshd_config regexp="^#?AllowAgentForwarding" line="AllowAgentForwarding no" state=present
+- name: Allow agent forwarding
+  lineinfile: dest=/etc/ssh/sshd_config regexp="^#?AllowAgentForwarding" line="AllowAgentForwarding yes" state=present
+  notify: Restart sshd
+
+- name: Keep auth sock open
+  lineinfile: dest=/etc/sudoers.d/keep_ssh_auth_sock regexp="^Defaults\s+env_keep" line='Defaults    env_keep += "SSH_AUTH_SOCK"' create=yes state=present mode=0440
   notify: Restart sshd
 
 - name: Run timedatectl status

@@ -26,8 +26,10 @@
     path: "{{install_location}}"
     owner: "www-data"
     group: "www-data"
-    mode: '0775'
+    mode: '02775'  #setgid bit is important here! you'll have a bad time with this two-user setup if you forget to set it. 
+    recurse: true
   when: not ti_composer_json.stat.exists
+  become: true
 
 
 - name: Download TastyIgniter
@@ -91,6 +93,7 @@
     dest: "{{ install_location }}"
     owner: www-data
     group: www-data 
+    mode: '02775'  #setgid bit is important here! you'll have a bad time with this two-user setup if you forget to set it. 
     recurse: yes
   become: true
 

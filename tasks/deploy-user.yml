@@ -16,7 +16,7 @@
 - name: load your default ssh key
   authorized_key:
     user: "{{ deploy_user }}"
-    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    key: "{{ lookup('file', ssh_pubkey_location) }}"
   become: true
 
 - name: confirm permissions on .ssh folder
