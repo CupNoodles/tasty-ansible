@@ -48,7 +48,7 @@
     accept_hostkey: true
     repo: "{{ti_git_repo}}"
     dest: "{{install_location}}"
-    ssh_opts: "-o StrictHostKeyChecking=no"
+    ssh_opts: "-o UserKnownHostsFile=/dev/null"
   when: install_as_git_clone and not ti_composer_json.stat.exists
   become: true
   become_user: "www-data"
