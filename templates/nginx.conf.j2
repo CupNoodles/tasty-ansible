@@ -8,7 +8,7 @@ server {
         root /var/www/certbot;
     }
 
-    return 301 https://$host{% if https_port != '443' %}:{{ https_port }}{%endif%}$request_uri;
+    return 301 https://$host{% if https_port is not none or https_port != '443' %}:{{ https_port }}{%endif%}$request_uri;
 }
 {% endif %}
 
@@ -31,7 +31,7 @@ server {
     ssl_prefer_server_ciphers on;
     ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
 
-    return 301 $scheme://www.$host$request_uri;
+    return 301 $scheme://www.$host{% if https_port is not none or https_port != '443' %}:{{ https_port }}{%endif%}$request_uri;
 }
 {% endif %}
 
