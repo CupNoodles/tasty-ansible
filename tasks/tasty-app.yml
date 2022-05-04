@@ -43,23 +43,11 @@
   become: true
   become_user: "www-data"
 
-- name: create .ssh for www-data
-  file:
-    path: "/var/www/.ssh"
-    mode: 0755
-    state: directory
-    owner: "www-data"
-    group: "www-data"
-  become: true
-  when: install_as_git_clone and not ti_composer_json.stat.exists
-
-
 - name: Download TastyIgniter (git clone)
   git:
-    accept_hostkey: true
     repo: "{{ti_git_repo}}"
     dest: "{{install_location}}"
-    #ssh_opts: "-o UserKnownHostsFile=/dev/null"
+    branch: "{{ti_git_branch}}"
   when: install_as_git_clone and not ti_composer_json.stat.exists
   become: true
   become_user: "www-data"

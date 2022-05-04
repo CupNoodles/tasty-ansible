@@ -39,7 +39,7 @@ app_url: "https://www.{{hostname}}{{ ':' ~ https_port if enable_ssl and https_po
 install_as_git_clone: false
 install_location: '/var/www/html/'
 ti_version_tag: '3.x'
-ti_git_repo: "git@github.com:tastyigniter/TastyIgniter.git"
+ti_git_repo: "https://github.com/tastyigniter/TastyIgniter.git"
 ti_git_branch: '3.x'
 
 disable_combiner: false # as of writing this, the asset combiner is broken out of the box. highly recommended to set this to true 
