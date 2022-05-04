@@ -32,7 +32,7 @@
   become: true
 
 
-- name: Download TastyIgniter
+- name: Download TastyIgniter (composer create-project)
   community.general.composer:
     command: create-project
     composer_executable: /usr/bin/composer
@@ -45,7 +45,8 @@
 
 - name: Download TastyIgniter (git clone)
   git:
-    accept_hostkey: true
+
+
     repo: "{{ti_git_repo}}"
     dest: "{{install_location}}"
   when: install_as_git_clone and not ti_composer_json.stat.exists
