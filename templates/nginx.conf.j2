@@ -18,9 +18,14 @@ server {
     listen 443 ssl;
     server_name {{ hostname }};
 
-    ssl_certificate {{ ti_certs.cert_path }};
-    ssl_certificate_key {{ nginx_certs.key_path }};
-
+    {% if env == 'local' %}
+    ssl_certificate /etc/ssl/certs/selfsigned-{{hostname}}.pem; 
+    ssl_certificate_key /etc/ssl/certs/selfsigned-{{hostname}}.key; 
+    {% else %}
+    ssl_certificate /etc/letsencrypt/live/{{hostname}}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{hostname}}/privkey.pem; 
+    {% endif %}
+    
     ssl_session_timeout 5m;
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
     ssl_prefer_server_ciphers on;
