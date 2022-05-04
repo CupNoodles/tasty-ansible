@@ -8,12 +8,10 @@
 
   - name: Create a self-signed certificate
     community.crypto.x509_certificate:
-      path: /etc/ssl/certs/selfsigned-{{hostname}}.pem
-      privatekey_path: /etc/ssl/certs/selfsigned-certificate.key
+      path: "/etc/ssl/certs/selfsigned-{{hostname}}.pem"
+      privatekey_path: "/etc/ssl/certs/selfsigned-{{hostname}}.key"
       provider: selfsigned
   
-  - name: configure nginx to use self-signed certificates
-
   when: env == 'local'
 
 
