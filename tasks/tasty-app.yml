@@ -36,12 +36,24 @@
   community.general.composer:
     command: create-project
     composer_executable: /usr/bin/composer
-    arguments: tastyigniter/tastyigniter "{{ install_location }}"
+    arguments: "tastyigniter/tastyigniter:{{ti_version_tag}} {{ install_location }} "
     working_dir: "{{ install_location }}"
     prefer_dist: yes
-  when: not ti_composer_json.stat.exists
+  when: not install_as_git_clone and not ti_composer_json.stat.exists
   become: true
   become_user: "www-data"
+
+- name: Download TastyIgniter (git clone)
+  community.general.composer:
+    command: create-project
+    composer_executable: /usr/bin/composer
+    arguments: "tastyigniter/tastyigniter:{{ti_version_tag}} {{ install_location }} "
+    working_dir: "{{ install_location }}"
+    prefer_dist: yes
+  when: install_as_git_clone and not ti_composer_json.stat.exists
+  become: true
+  become_user: "www-data"
+
 
 - name: Check if .env exists
   stat:
