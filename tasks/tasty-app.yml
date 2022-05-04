@@ -71,6 +71,7 @@
   with_items:
   - { regexp: '^APP_NAME=.*$', line: 'APP_NAME="{{app_name}}"' }
   - { regexp: '^APP_URL=.*$', line: 'APP_URL="{{app_url}}"' }
+  - { regexp: '^DB_HOST=.*$', line: 'DB_HOST="{{mysql_db_host}}"' }
   - { regexp: '^DB_PORT=.*$', line: 'DB_PORT="3306"' }
   - { regexp: '^DB_DATABASE=.*$', line: 'DB_DATABASE="{{mysql_db_name}}"' }
   - { regexp: '^DB_USERNAME=.*$', line: 'DB_USERNAME="{{mysql_user_name}}"' }
@@ -86,6 +87,14 @@
   changed_when: false
   become: true
   become_user: "www-data"
+
+- name: optionally disable asset combiner
+  lineinfile:
+    path: "{{ install_location }}/config/system.php"
+    regexp: "'enableAssetCombiner'"
+    line: "    'enableAssetCombiner' => FALSE,"
+    state: present
+  when: disable_combiner
 
 
 - name: run config:cache

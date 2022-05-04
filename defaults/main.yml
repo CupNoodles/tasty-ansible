@@ -18,6 +18,7 @@ ssh_pubkey_location: '~/.ssh/id_rsa.pub' # This is the pubkey on your host machi
 # tasty igniter server settings
 
 # mysql
+mysql_db_host: "127.0.0.1"
 mysql_db_name: "tastyigniter"
 mysql_user_name: "tastyigniter"
 mysql_user_password: "password"
@@ -34,6 +35,8 @@ install_location: '/var/www/html/'
 app_name: "TastyIgniter"
 app_url: "https://www.{{hostname}}{{ ':' ~ https_port if enable_ssl and https_port is not none and https_port != 443 and not reverse_proxy_setup else ''}}{{ ':' ~ http_port if not enable_ssl and http_port is not none and http_port != 80 and not reverse_proxy_setup else ''}}" 
 
+
+disable_combiner: false # as of writing this, the asset combiner is broken out of the box. highly recommended to set this to true 
 
 
 
