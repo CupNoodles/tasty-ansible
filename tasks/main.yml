@@ -5,7 +5,9 @@
 
 - name: create a deploy/ssh user for server maintenance
   import_tasks: deploy-user.yml
+  when: create_deploy_user == true
   tags: ['deploy-user']
+
 
 - name: install webserver requirements for tastyigniter
   import_tasks: server-requirements.yml

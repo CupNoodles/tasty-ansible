@@ -107,7 +107,7 @@
   cron: 
     name: "Artisan scheduler"
     minute: "*"
-    user: "{{ deploy_user }}"
+    user: "{{ create_deploy_user | ternary(deploy_user, 'www-data') }}"
     job: "php {{ install_location }}/artisan schedule:run >> /dev/null 2>&1"
   become: true
 

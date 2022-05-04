@@ -1,6 +1,6 @@
 ---
 # global settings
-env: 'vm'
+env: 'local'
 
 # ubuntu/system settings
 
@@ -9,6 +9,8 @@ timezone_name: 'America/New_York'
 enable_ssl: true  # make sure this is true if app_url is set to an https url
 
 # deploy user settings
+
+create_deploy_user: true
 deploy_user: 'deploy'
 deploy_user_sudo_password: 'password'
 ssh_pubkey_location: '~/.ssh/id_rsa.pub' # This is the pubkey on your host machine, so that you can easily SSH into your host as the newly created user

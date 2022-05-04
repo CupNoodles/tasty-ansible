@@ -1,0 +1,13 @@
+---
+
+- block: Create and install self-signed certificate for local development servers
+  - name: Create a self-signed certificate
+    community.crypto.x509_certificate:
+      path: /etc/ssl/certs/selfsigned-certificate.pem
+      privatekey_path: /etc/ssl/certs/selfsigned-certificate.key
+      provider: selfsigned
+  when: env == 'local'
+
+
+
+

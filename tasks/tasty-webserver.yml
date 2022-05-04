@@ -1,7 +1,7 @@
 ---
 - name: create a domain-specific nginx conf file
   become: true
-  template: "src=templates/nginx.conf.j2 dest=/etc/nginx/sites-available/{{ hostname }} owner={{ deploy_user }} group={{ deploy_user }} mode=0644"
+  template: "src=templates/nginx.conf.j2 dest=/etc/nginx/sites-available/{{ hostname }} owner=www-data group=www-data mode=0644"
   tags: ['nginx']
   notify: restart nginx
 
