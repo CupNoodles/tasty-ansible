@@ -88,6 +88,14 @@
   become_user: "www-data"
 
 
+- name: run config:cache
+  shell: "php artisan config:cache"
+  args:
+    chdir: "{{ install_location }}"
+  changed_when: false
+  become: true
+  become_user: "www-data"
+
 - name: chown everything in install_location to www-data
   file: 
     dest: "{{ install_location }}"
