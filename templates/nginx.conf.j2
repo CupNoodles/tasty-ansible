@@ -16,7 +16,7 @@ server {
 {% if redirect_www %}
 server {
     listen 443 ssl;
-    server_name {{ base_domain }};
+    server_name {{ hostname }};
 
     ssl_certificate {{ ti_certs.cert_path }};
     ssl_certificate_key {{ nginx_certs.key_path }};
