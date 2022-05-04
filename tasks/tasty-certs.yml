@@ -2,11 +2,18 @@
 
 - name: Create and install self-signed certificate for local development servers
   block:
+  - name: Create private key (RSA, 4096 bits)
+    community.crypto.openssl_privatekey:
+      path: /etc/ssl/certs/selfsigned-certificate.key
+
   - name: Create a self-signed certificate
     community.crypto.x509_certificate:
       path: /etc/ssl/certs/selfsigned-certificate.pem
       privatekey_path: /etc/ssl/certs/selfsigned-certificate.key
       provider: selfsigned
+  
+  - name: configure nginx to use self-signed certificates
+
   when: env == 'local'
 
 
