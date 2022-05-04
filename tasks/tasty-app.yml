@@ -52,6 +52,20 @@
   become: true
   become_user: "www-data"
 
+- name: git repo will be owned by www-data, add to safe if using deploy user
+  community.general.git_config:
+    name: safe.directory
+    scope: global
+    value: "{{ install_location }}"
+  when: install_as_git_clone and not ti_composer_json.stat.exists and create_deploy_user
+
+- name: git reset --hard to get us up to date
+  command: git reset --hard 
+  args:
+    chdir: "{{ install_location }}"
+  changed_when: false
+  when: install_as_git_clone and not ti_composer_json.stat.exists
+
 - name: composer install if cloned from git
   community.general.composer:
     command: install
