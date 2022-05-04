@@ -44,16 +44,22 @@
   become_user: "www-data"
 
 - name: Download TastyIgniter (git clone)
-  community.general.composer:
-    command: create-project
-    composer_executable: /usr/bin/composer
-    arguments: "tastyigniter/tastyigniter:{{ti_version_tag}} {{ install_location }} "
-    working_dir: "{{ install_location }}"
-    prefer_dist: yes
+  git:
+    accept_hostkey: true
+    repo: "{{ti_git_repo}}"
+    dest: "{{install_location}}"
   when: install_as_git_clone and not ti_composer_json.stat.exists
   become: true
   become_user: "www-data"
 
+- name: composer install if cloned from git
+  community.general.composer:
+    command: install
+    composer_executable: /usr/bin/composer
+    working_dir: "{{ install_location }}"
+  when: install_as_git_clone and not ti_composer_json.stat.exists
+  become: true
+  become_user: "www-data"
 
 - name: Check if .env exists
   stat:
