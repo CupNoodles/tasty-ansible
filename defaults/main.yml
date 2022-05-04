@@ -32,7 +32,7 @@ certbot_email: tastyigniter-example@tastyigniter-testing.com
 # app
 install_location: '/var/www/html/'
 app_name: "TastyIgniter"
-app_url: "http://www.taatyigniter-example.com"
+app_url: "https://www.{{hostname}}" 
 
 
 
