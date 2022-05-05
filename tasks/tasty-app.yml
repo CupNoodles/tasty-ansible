@@ -16,12 +16,6 @@
 
 - name: clear out the install directory if it exists (required if nginx is installed and install_location is default /var/www/html/)
   file: 
-    state: a
-    path: "{{install_location}}"
-  when: not ti_composer_json.stat.exists
-
-- name: clear out the install directory if it exists (required if nginx is installed and install_location is default /var/www/html/)
-  file: 
     state: absent
     path: "{{install_location}}"
   when: not ti_composer_json.stat.exists
