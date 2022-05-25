@@ -14,9 +14,6 @@
     path: "{{ install_location }}/composer.json"
   register: ti_composer_json
 
-
-
-
 - name: Download TastyIgniter (composer create-project)
   community.general.composer:
     command: create-project

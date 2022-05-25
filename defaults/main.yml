@@ -42,7 +42,8 @@ ti_git_branch: '3.x'
 
 disable_combiner: false # as of writing this, the asset combiner is broken out of the box. highly recommended to set this to true 
 
-
+http_port: 80
+https_port: 443
 
 
 
