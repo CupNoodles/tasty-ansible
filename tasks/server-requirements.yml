@@ -11,7 +11,7 @@
       - php-fpm
       - php-mysql
       - php-curl
-      - php-dom
+      - php-xml
       - php-gd
       - php-mbstring
       - php-json
